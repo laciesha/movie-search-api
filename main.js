@@ -23,7 +23,8 @@ const search = (ev) => {
       }
      
       const movieTemplate = `
-    
+      
+      <move-display title="$
  
  
  
