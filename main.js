@@ -1,6 +1,8 @@
 import "./style.css";
 import { apiKey } from "./key.js";
+//import "./js/connection";
 
+let favoriteArray = [];
 document.querySelector("#app").innerHTML = `
   <h1>Movie Lookup Site</h1>
   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
@@ -10,7 +12,7 @@ const search = (ev) => {
   const title = document.querySelector("#title").value;
   const year = document.querySelector("#year").value;
   const plot = document.querySelector("#plot").value;
-  const url = `https://www.omdbapi.com/?t=${title}&y=${year}&plot=${plot}=full&apikey=${apiKey}`;
+  const url = `https://www.omdbapi.com/?t=${title}&y=${year}&plot=full&apikey=${apiKey}`;
 
   console.log(url);
   fetch(url)
@@ -24,14 +26,10 @@ const search = (ev) => {
      
       const movieTemplate = `
       
-      <move-display title="$
- 
- 
- 
-  <h2>${data.Title}</h2>
-  <p>${data.Year}</p>
-  <img src="${data.Poster}" alt= "poster image"/>
-  <p>${data.Plot}</p>
+      <movie-display title="${data.Title}" year="${data.Year}" img="${data.Poster}" desc="${data.Plot}">
+    
+  
+  </movie-display>
   
   `;
       //Target information  or Movie  Details by adding to the DOM

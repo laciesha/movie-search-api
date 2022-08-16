@@ -12,20 +12,20 @@ class Store {
     this.state = new Proxy(init, {
       //set the value on the state. this won't retrigger the proxy
       set(state, key, value) {
-        state[key] =value;
+        state[key] = value;
         self.subscrivers.forEach((subsciber) => subsciber(state));
         return true;
-      
-      }
+      },
+    });
+  }
+  subscribe(cb) {
+    if (typeof cb !== "function") {
+      throw new Error("You must subscribe with a function");
     }
-    )
+
+    this.subscribers.push(cb);
   }
-  }
-  subscribe(cb){
-    if(typeof cb!== "function")
-    throw new Error ("You must subscribe with a function");
-  }
-  this.subscribers.push(cb);
+}
 
 class Movie extends HTMLElement {
   constructor() {
@@ -35,8 +35,10 @@ class Movie extends HTMLElement {
   //overriding the connected callback method with my own html
   connectedCallback() {
     this.innerHTML = `
-        <p>${this.getAttribute("title")}</p>
+        <img src=${this.getAttribute("img")}>
+        <h2>${this.getAttribute("title")}</h2>
         <p>${this.getAttribute("year")}</p>
+        <p>${this.getAttribute("desc")}</p>
         
         
         `;
