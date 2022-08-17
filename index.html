@@ -16,12 +16,15 @@
         type="text"
         placeholder="Title of the movie"
         id="title"
-        required="required"
-      /><br />
+        
+      />
+      <span id="title-error"></span>
+      <br />
+
       <label class="control-label" for="plot">Plot:</label>
 
       <select name="plot" id="plot" style="width: 100px">
-        <option value="" selected="">Short</option>
+        <option value="short" selected="">Short</option>
         <option value="full">Full</option>
       </select>
       <label class="control-label" for="year">Year:</label>
@@ -30,16 +33,12 @@
         type="number"
         placeholder="Year"
         minlength="4"
-        ,
         maxlength="4"
         id="year"
       /><br />
       <button id="go" type="submit">go</button>
     </form>
-    <!-- <movie-display title="Rush Hour" year="1998"></movie-display>
-    <movie-display title="Jaws" year="1980"></movie-display>
-    <movie-display title="Scream" year="2000"></movie-display>  -->
-
+   
     <div id="movie-details"></div>
     <script type="module" src="/movie.js"></script>
  
