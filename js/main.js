@@ -1,13 +1,28 @@
-import "./style.css";
+import "../style.css";
 import { apiKey } from "./key.js";
 //import "./js/connection";
-//import stateManager from './js/state-manager
+//import stateManager from './js/state-stateManager
+//import StateManager from './state-manager.js'
+const state ={
+  search: false,
+  movies: [],
+  key: "",
+  favorites: []
+}
 
-let favoriteArray = [];
 document.querySelector("#app").innerHTML = `
   <h1>Movie Lookup Site</h1>
   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
 `;
+
+const onStateChange =()=> {
+  if(state.search === true){
+    search()
+  }
+}
+const addMovieToState =(movie)=>{
+  state.movies.push(movie)
+}
 const search = (ev) => {
   ev.preventDefault();
   document.querySelector("#title-error").textContent=''
@@ -29,6 +44,8 @@ button.disabled = true
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+      addMovieToState(data)
+      console.log('state',state)
       const parent = document.querySelector("#movie-details");
       while (parent.firstChild) {
         parent.removeChild(parent.firstChild);

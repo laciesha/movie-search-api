@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
+export default class Movie
 
-  <body>
-    <div id="app"></div>
+class SearchForm {
+    constructor()
+
+}
+
+drawForm () {
+    //the job of this method is to display a form to the HTML
     <form>
       <label class="control-label" for="title">Title:</label>
 
@@ -38,11 +36,14 @@
       /><br />
       <button id="go" type="submit">go</button>
     </form>
-   
-    <div id="movie-details"></div>
-    <script type="module" src="/js/connection.js"></script>
-    <script type="module" src="/js/movie.js"></script>
- 
-    <script type="module" src="/js/main.js"></script>
-  </body>
-</html>
+}
+
+search() {
+    //the job of this method is to send the 
+    //search to the cloud (OMDB)
+}
+
+displayResults() {
+    //the job of this meethod is to display the movie
+    // once the response comes back from
+}
