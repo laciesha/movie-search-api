@@ -4,24 +4,34 @@ The state manager's job is to:
 (b) notify components when critical changes have happened, and 
 (c) allow components to notify it that data has changed.
 */
-
+import Database from './database.js';
 export default class StateManager {
   constructor() {
     // initialize the data store.
     // This is our state. When anything changes
     // with any of these variables, we need to
     // notify our components:
+   
     this.movies = [];
     this.searchResults = [];
     this.favorites = [];
     this.subscribers = []; //so that compnents can listen for changes to the state
     this.searchMode = true;
     this.showNotes = true;
+    this.data = [];
+    this.database = new Database();
+    this.subscribe('like-requested', this.saveMovieToFavorites.bind(this));
   }
   // A method to read a user's favorites from IndexedDB when the page first loads.
   loadFavorites() {}
   // A method to add a new movie to the user's favorites and save it to IndexedDB.
-  saveMovieToFavorites() {}
+  saveMovieToFavorites(movieData) {
+    console.log("I am about to save the movie to the DB");
+    console.log(movieData);
+    this.database.addOrUpdate(movieData, function () {
+      console.log('Successfully added to the database');
+    });
+  }
 
  
  
@@ -31,9 +41,9 @@ export default class StateManager {
     //and invokes the subscriber's function if they're interested
     //in the particular event
     for(let i = 0; i < this.subscribers.length; i++) {
-        const subscribers = this.subscribers[i];
+        const subscriber = this.subscribers[i];
 
-        const subscriberEvent = this.subscriber[0];
+        const subscriberEvent = subscriber[0];
         const callbackFunction = subscriber[1];
 
         //is the event tht waa just fired somthing that
@@ -50,7 +60,7 @@ export default class StateManager {
     //when a compnent wants to subscribe to the stateManager,
     //they need to tell the sm which event they're interested in,
     // and what should happen if that event is fired (callback function).
-    this.subscribers.push([eventName, callbckFunction]);
+    this.subscribers.push([eventName, callbackFunction]);
   }
 }
 
