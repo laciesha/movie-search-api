@@ -4,55 +4,82 @@ The state manager's job is to:
 (b) notify components when critical changes have happened, and 
 (c) allow components to notify it that data has changed.
 */
-import Database from './database.js';
+import Database from "./database.js";
 export default class StateManager {
   constructor() {
     // initialize the data store.
     // This is our state. When anything changes
     // with any of these variables, we need to
     // notify our components:
-   
+
     this.movies = [];
     this.searchResults = [];
     this.favorites = [];
     this.subscribers = []; //so that compnents can listen for changes to the state
     this.searchMode = true;
-    this.showNotes = true;
+    this.showNotes = false;
     this.data = [];
     this.database = new Database();
-    this.subscribe('like-requested', this.saveMovieToFavorites.bind(this));
+    this.loadFavorites();
+
+    this.subscribe("like-requested", this.saveMovieToFavorites.bind(this));
+    this.subscribe("movie-found", this.setSearchResults.bind(this));
+    this.subscribe("favorites-loaded", this.setFavorites.bind(this));
+    this.subscribe("show-notes", this.toggleNotes.bind(this));
   }
+
+  setSearchResults(moveieDataList) {
+    this.searchResults = moveieDataList;
+    this.movies = this.searchResults;
+  }
+
+  setFavorites(moveieDataList) {
+    this.favorites = moveieDataList;
+    this.movies = this.favorites;
+  }
+
+  toggleNotes(val) {
+    this.showNotes = val;
+    this.notify("redraw", this.movies);
+  }
+
   // A method to read a user's favorites from IndexedDB when the page first loads.
-  loadFavorites() {}
+
+  loadFavorites() {
+    //reads from IndexedDB
+
+    const callbackFunction = function (movieDataList) {
+      this.notify("favorites-loaded", movieDataList);
+    };
+
+    this.database.getAll(callbackFunction.bind(this));
+  }
+
   // A method to add a new movie to the user's favorites and save it to IndexedDB.
   saveMovieToFavorites(movieData) {
     console.log("I am about to save the movie to the DB");
     console.log(movieData);
     this.database.addOrUpdate(movieData, function () {
-      console.log('Successfully added to the database');
+      console.log("Successfully added to the database");
     });
   }
 
- 
- 
   // A method to notify components that something has changed.
   notify(eventName, data) {
     //loops through all of the subscribers
     //and invokes the subscriber's function if they're interested
     //in the particular event
-    for(let i = 0; i < this.subscribers.length; i++) {
-        const subscriber = this.subscribers[i];
+    for (let i = 0; i < this.subscribers.length; i++) {
+      const subscriber = this.subscribers[i];
 
-        const subscriberEvent = subscriber[0];
-        const callbackFunction = subscriber[1];
+      const subscriberEvent = subscriber[0];
+      const callbackFunction = subscriber[1];
 
-        //is the event tht waa just fired somthing that
-        //the subscriver is interested in?
-        if (eventName == subscriberEvent){
-            callbackFunction(data);
-        }
-
-
+      //is the event tht waa just fired somthing that
+      //the subscriver is interested in?
+      if (eventName == subscriberEvent) {
+        callbackFunction(data);
+      }
     }
   }
 
@@ -63,12 +90,6 @@ export default class StateManager {
     this.subscribers.push([eventName, callbackFunction]);
   }
 }
-
-
-
-
-
-
 
 // //When using functions from other files import here
 // import { addNote, addFavorite } from "./connection";

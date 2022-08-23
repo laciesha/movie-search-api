@@ -7,24 +7,29 @@ export default class SearchForm {
   drawForm() {
     //the job of this method is to display a form to the HTML
     const formTemplate = `
+    <h2>Search Movies</h2>
     <form>
-      <label class="control-label" for="title">Title:</label>
-
-      <input
-        type="text"
-        placeholder="Title of the movie"
-        id="title"
-        
-      />
-      <span id="title-error"></span>
-      <br />
-
+    <div class="form-group">
+    <label class="control-label" for="title">Title:</label>
+    <input
+      type="text"
+      placeholder="Title of the movie"
+      id="title"
+      
+    />
+    <span id="title-error"></span>
+    </div>  
+   
+    <div class="form-group">
       <label class="control-label" for="plot">Plot:</label>
 
       <select name="plot" id="plot" style="width: 100px">
         <option value="short" selected="">Short</option>
         <option value="full">Full</option>
       </select>
+    </div>
+
+    <div class="form-group">
       <label class="control-label" for="year">Year:</label>
 
       <input
@@ -33,11 +38,17 @@ export default class SearchForm {
         minlength="4"
         maxlength="4"
         id="year"
-      /><br />
+      />
+      </div>
       <button id="go" type="submit">go</button>
+      <button id="reset" type="reset">reset</button>
+      <button id="show-favorites" type="Favorites">favorites</button>
+
     </form>`;
     document.querySelector(".form-container").innerHTML = formTemplate;
     document.querySelector("form").addEventListener("submit", this.search.bind(this));
+    document.querySelector('#reset').addEventListener('click', this.clearScreen.bind(this));
+    document.querySelector('#show-favorites').addEventListener('click', this.loadFavorites.bind(this));
   }
 
   search(ev) {
@@ -71,8 +82,18 @@ export default class SearchForm {
       
   }
 
-  displayResults() {
-    //the job of this meethod is to display the movie
-    // once the response comes back from
+  clearScreen(ev) {
+    ev.preventDefault();
+    document.querySelector('#title').value = "";
+    //document.querySelector('#plot').value = "short";
+    document.querySelector('#year').value = "";
+
+    this.stateManager.notify('clear-everything');
   }
+
+
+  loadFavorites(ev) {
+    ev.preventDefault();
+    this.stateManager.loadFavorites();
+}
 }
