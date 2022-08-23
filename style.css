@@ -7,5 +7,55 @@
   margin-top: 60px;
 }
 
+body{
+  margin: 0;
+  padding: 0;
+}
 
+#title-error {
+color: red;
+}
 
+.form-container{
+  background-color: #000;
+  color: #fff;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.form-container h2{
+  margin-top: 0;
+}
+
+form{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+form .form-group{
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+form button{
+  text-transform: capitalize;
+  border-radius: 20px;
+  background-color: #ff7300;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 4px 16px;
+}
+
+textarea{
+  width: 100%;
+  min-height: 120px;
+}
+
+#show_notes{
+  float:right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
